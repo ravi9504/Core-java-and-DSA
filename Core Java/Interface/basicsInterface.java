@@ -1,19 +1,31 @@
-package Interface;
+// package Interface;
 
 
-/*  All interface is like by default abstract class and abstract method (by default) in interface.
-    To inherits the interface Java use 'implements'
-    
+/*   All methods are abstract (by default) in interface but in JAVA 8 'default','static' was introduced
+    To inherits the interface in class we use 'implements'
+    To inherits the interface in iterface we use 'extends'
+    Interface variable is public static final (by default) and we have to define the variable there in that interface only unless it shows compiler error   
+
+    @FunctionalInterface // this is annotation is used to show (java tells us) that  if there is any chance of error regarding functional interface
+    like if we give annotation and we wrote two method in that interface then it will show error beacuse functional interface should have only one abstract method
+
+
+    ! lambda Expression ->(why we use it) to reduce the number lines which executes that same as it was executing before and lambda expression is used with functional interface only    
 */
 
+@FunctionalInterface
+interface me{
+    void intro();
+}
 interface test{
     void meth1();
     void meth2();
 }
+
 interface test1 extends  test{
     void meth4();
     default void meth5(){
-        System.out.println("This is default method it is used java 8 version onwards"); // but this method cannot be accessed by '.' operation
+        System.out.println("This is default method it is used java 8 version onwards");
     }
     // use of default mehtod is that if we create the method is abstract, we have to override the method but now in default method no need of overriding and it is accessible through implemented class.....     
     // One more use of defalut method is that if in future we want to modify the interface then the call will become abstract so that it was not possible to modifing the interface so we use default method to modify the interface..
@@ -56,7 +68,7 @@ class  phone{
     }
 }
 interface iCamera{
-    public void click();     // the method in interface is by default public because if it is private then it cann't be overrided . So the method is written with the public access specifier or without access specifier
+    public void click();     // the method in interface is by default 'public' because if it is private then it cann't be overrided . So the method is written with the public access specifier or without access specifier
     void record();
 }
 interface iMusicPlayer{
@@ -88,7 +100,7 @@ class smartPhone extends phone implements iCamera,iMusicPlayer{   // we can impl
 // callback Method
 
 interface member{
-    /* static final */ int X=10;   // In interface the contant can be declared and defined but the variable name should be in Capital letter. The variable is by deafault 'static' and 'final'    Do's
+    /* static final */ int X=10;   // In interface the constant can be declared and defined but the variable name should be in Capital letter. The variable is by deafault 'static' and 'final'    Do's
 
     void callback();  //   In interface, the method is public and abstract by default.. and it cannot be private
 
@@ -129,7 +141,9 @@ public class basicsInterface {
         my my= new my();
         my.meth1();my.meth2();my.meth3();my.meth4();my.meth5();my.methd();
         
-
+        me m = ()-> System.out.println("My name is Ravi Raushan");
+        m.intro();
+        
 
     /*    
         smartPhone sp= new smartPhone();
