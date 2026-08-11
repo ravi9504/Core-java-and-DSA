@@ -1,4 +1,4 @@
-package ExceptionHandling;
+// package ExceptionHandling;
 // and a part that should be execute always whether there is exception or not anf for this we use 'finally' (last part of the try-catch block) 
 
 
@@ -40,7 +40,7 @@ public class basicsExceptionHandling {
     
       public static int meth1 (int l,int b )throws bankingException{
             if(l<0|| b<0){
-                throw new bankingException(); 
+                throw new bankingException("The amount is your account is less than 5000 that is less than minimum required amount in your account"); 
             }
             else{
                 int a=l*b;
@@ -148,15 +148,15 @@ System.out.println(c);
 
 
         // example of throw and throws 
-        /*
-                whenever a method throw an exception then that method should be handle through the try and catch block
+        
+        //        whenever a method throw an exception then that method should be handle through the try and catch block
         
         try {
             meth1(-5, 10);
         } catch (bankingException e) {
             System.out.println(e);
         }
-           */
+           
  
         
     }
@@ -175,12 +175,30 @@ System.out.println(c);
     }
 
 class bankingException extends Exception{
-    public String toString(){
-        return "The amount is your account is less than 5000 that is less than minimum required amount in your account";
-    }
+    // public String toString(){
+    //     return "The amount is your account is less than 5000 that is less than minimum required amount in your account";
+    // }   
+    //or
+        public bankingException(String message){
+         super(message);
+ }
 }
 
 
+
+/* Exception Propagation is the important concept in java that is used to handle the exception in the program. 
+    In this concept if a method throws an exception then that method should be handle through the try and catch block or throws keyword.
+    If a method does not handle the exception then it will propagate to the calling method and so on until it reaches the main method. 
+    If the main method does not handle the exception then it will be handled by the JVM and the program will terminate.
+
+    Exception Chaining is the important concept in java that is used to handle the exception in the program.
+    Why we use it .... because we don't want to expose database specific implementation to the client. So we can use exception chaining to wrap the database specific exception into a custom exception and throw it to the client.
+    example:    try{
+                    // database specific code
+                }catch(SQLException e){
+                    throw new CustomException("Database error", e);
+                }
+ */
 
 
 

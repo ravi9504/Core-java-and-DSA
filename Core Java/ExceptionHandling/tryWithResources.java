@@ -15,7 +15,7 @@ public class tryWithResources {
     // static Scanner s;
     // static FileInputStream f;
 
-    static void Divide() throws Exception{
+    static void Divide() throws Exception{     // this line means that this method can throw an exception and it should be handle through try and catch block if it is checked exception
     //     f=new FileInputStream("C:/Users/ravir/Downloads/my.txt");
     //     s=new Scanner(f);
     //     try{
@@ -47,5 +47,12 @@ public class tryWithResources {
             System.out.println(e);
         }
     }
-    
 }
+
+
+/* why TRY WITH RESOURCES is  important in industry?
+Imagine your backend recieves 1000 requests per second and each request is opening a file and not closing it.
+ Then after some time your server will run out of resources and it will crash. 
+ So to avoid this we use try with resources which automatically closes the resources
+  once it is done. */
+
