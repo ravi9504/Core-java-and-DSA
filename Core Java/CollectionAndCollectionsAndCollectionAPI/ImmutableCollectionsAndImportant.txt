@@ -1,0 +1,143 @@
+                        Immutable Collections.
+List<String>name= List.of("Ravi","Amit");       we can't do name.add("neha");
+-> It throws an exception because the resulting list is unmodifiable. Similarly Set.of(...) and Map.of(....)
+    are useful for fixed size of data.
+
+-> Arrays.asList()   vs      List.of()
+
+Arrays.asList("A","B");  returns a fixed size list backed by the Arrays
+We cannot change its size list.add("D"); throws exception But generally we can replace elements with set() method
+whereas list.of("A","B") is unmodifiable
+
+-> List.of()        vs    new ArrayList<>()
+
+As we know list.of(..) is unmodifiableor immutable but we it can be mutable like this 
+List<String>name= new ArrayList<>(List.of("Ravi","Amit"));
+ names.add("Rahul");  works 
+
+
+->  ListIterator is an interface 
+It extends iterator. It allows bidirectional.  Ex-> ListIterator<String>it= names.listIterator();
+we can use hasNext(), next()
+hasPrevious(), previous()
+It can also support add() to insert , set() to replace whatever present there and put the different value, remove() to remove 
+
+Collection->interface
+Collections->utility class
+
+Q. Can we remove from a collection while iterating?
+    Yes, but we need to use an appropriate mechanism such as. Iterator.remove() or removeIf()
+
+Q. Why does not set have indexes?
+    because generally set does not promise index-based ordering
+
+Q. How does HashSet know "Java" already exist?
+    Suppose skills.add("Java");  java needs to determine "is an equal element already present?"
+    Hash-based collection use hashCode() + equals() the simplified process is 
+                    "Java" -> hashCode()-> hashValue-> bucket-> Check candidate elements-> equals()
+                    This process helps to understand hashset and hashmap makes much easy
+
+Follow up question>>>>>
+    HashCode()?
+        Every java object inherits hashCode() from the object
+            public int hashCode()
+                -> returns an integer representing a hashvalue for the object   String na="Ravi"
+                sout(name.hashCode());
+                    Object->hashCode()->Integer hashValue
+    Why do we need hashvalue?
+        Imagine a library having 100k books to find a book we don't go one by one. We directly 
+        go to specific section search and hashfunction helps determine where to look
+        Similarly, Object->hashCode->bucket
+        Hash-based collections narrow the search
+
+        ->Bucket Concept
+            Imagine a simplified HashSet with 8 buckets. "Ravi" produces some hashvalue. Hash is processed to determine
+            a bucket.
+            Conceptually, Ravi->hashCode()->1232434-> bucket-> calc->bucket6
+
+        What happens when you add the same object again?
+            Ravi-> hashCode-> same hash/bucket area-> equals()-> already equal-> don't add
+
+.  == checks where the references point to the same object but .equals() checks logical equality 
+    based on its content
+
+    Q. Why does HashSet use equals()?
+        Because the set needs to know "are they logically the same elements?"   Emp Id 101     Emp ID 101
+         Even if they are two different object, but business logic should say they are same
+         HashCode()/ equals() contract
+            Most important rules in java 
+            If a.equals(b)==true the a.hashCode()=b.hashCode() must be true   (equals Object-> same hashcode)
+            But the reverse is not guaranteed
+
+            ! Two different objects can have the same hash code that is called hash collision
+
+        Hash Collision.....
+         Obj A     hash 100                     obj B      hash 100
+        they have same hash 
+        Does that mean A.equals()==true------> NO 
+        they can still be different objects 
+        So java needs another check
+            hashCode()->same bucket->equal()-> different Objects -> both can exist
+             that's why both hashcode() and equals() matter
+
+CRITICAL RULE 
+            If equals() is true -> hashcode must be same
+            if hashCode is same -> equals does have to be true
+
+
+
+Real World Employee Example
+
+Employee e1= new Employee(101,"Ravi");
+Employee e2= new Employee(101,"Ravi");
+        But java default Object.equals() will consider them different objects because you haven't
+        defined your own equality semantics. So both can contain HashSet
+
+Correctly defining equality
+    For modern java, a common implementation style is 
+        @Override
+        // this is defining own equality
+        public boolean equals(Object o){
+            if(this==o){
+                return true;
+            }
+            if(!(o instanceOf employee)) return false;
+            Employee emp= (Employee) o;
+            return id==emp.id;
+        }
+        // this is defining own hashcode
+        @Override
+        public int hashCode(){
+            return Integer.hashCode();
+        }
+
+        // Now e1 and e1 are logically equal so set will treat them as duplicates
+
+Q. Why should hashCode() use the same fields as equals()?
+    Suppose equals() uses id but hashCode uses name. I could get e1.equals(e2)== true but the e1.hashCode!=e2.hahsCode()
+    that violated the contract
+
+
+    HashSet Complexity-- typical average case
+        add(1)-->O(1)
+        contain()--> O(1)
+        remove()-->O(1)
+    But hashset always O(1)------> No
+    Hash performance depends on
+    -> equlity of hash distribution
+    -> Collision
+    -> implementation details
+    -> resizing    -> data characteristics
+
+
+HashSet resizing___________
+->Hash based collections don't keep an unlimited number of elements
+in the initial table. As element increases, java resize the table
+This improves look up efficiency but resizing itself costs work
+
+LoadFactor?...
+it determines when resizing should be happen
+-> commonly used LoadFactor is 0.75
+Conceptually threshold= capacity * loadfactor 
+if capacity is 16 then 16*0.75= 12 which is threshold and when table reaches the 
+threshold then table resize itself

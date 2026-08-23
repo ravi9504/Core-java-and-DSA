@@ -1,10 +1,14 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 class collections{
 /*
@@ -190,8 +194,68 @@ class collection {
             .get()-> retrieve the value 
                 emp.get(101); -> Ravi
                 emp.get(999); -> null // key does not exist
-            
-         */
+            .containsKey()-> it checks whether the key exist or not
+                emp.containsKey(101); return true;
+            preferred emp.get!=null
+                because a map can legitimately contain a key mapped to null
+    !       .getOrDefault(Object key, v defaultValue) -> it helps to get the value of key and if not exist then return the default value
+                Before java 8:
+                    if(count.containsKey(words)){
+                    count.put(word,count.get(word)+1)}
+                    else{
+                        count.put(word,1);}
+                with getOrDefault()
+                    count.put(word, count.getOrDefault(word,0)+1);
+                        // when we were using get method then if the value does not present then it returned
+                        //  null but in this method it return the default value
+            .putIfAbsent()      ex emp.putIfAbsent(101,"Ravi");
+                    it maps only if the key 101 is not already mapped
+                    It does not replace the value 
+            .keySet()-> returns key       Set<Integer>id= emp.keySet();
+            .values()-> return values
+    !       .entrySet()   returns key+value
+                    Set<Map.Entry<Integer,String>>entries= emp.entrySet();
+                    we commonly use 
+                    for(Map.Entry<Integer,String> e: emp.entrySet()){
+                    System.out.println(entry.getKey + "->" + entry.getValue());}       
+         */ 
+
+            Map<Integer,String> m= new HashMap<>();
+            m.put(101, "Ravi");
+            m.put(102, "Abhi");
+            m.put(103, "Amit");
+            m.put(104, "Dhoni");
+            m.put(105, "Rohit");
+            m.put(106, "Virat");
+            m.put(107, "Rahul");
+            System.out.println(m.get(104));
+            System.out.println(m.containsKey(104));
+            Map<String,Integer>m1= new HashMap<>();
+            System.out.println(m.keySet());
+           System.out.println(m.values());
+            m1.put("ME", 1);
+            m1.put("Kapil", 2);
+            m1.put("VVS", 3);
+            m1.put("Mahila", 4);
+            m1.put("Cook", 5);
+           String name="Kaapil";
+           m1.put(name, m1.getOrDefault(name,0)+1);
+           System.out.println(m1.keySet());
+           System.out.println(m1.values());
+           m.putIfAbsent(101, "Ravi");
+           m.putIfAbsent(111, "Ravi");
+           for(Map.Entry<Integer,String>e:m.entrySet()){
+                System.out.println(e.getKey()+ " ->"+ e.getValue());
+           }
+       
+    }
+    public void linkedhashSet(){
+        Set<String>names= new LinkedHashSet<>();
+        names.add("Ravi");
+        names.add("Amit");
+        names.add("Raushan");
+
+        System.out.println(names);
     }
 
    
@@ -238,7 +302,11 @@ class basics{
         collection cl= new collection();
         // cl.fun();
         // cl.list();
-        cl.linkedList();
+        // cl.linkedList();
+        // cl.hashMap();
+        cl.linkedhashSet(); 
+        // hashSet -> Uniqueness but no guaranteed order
+        // LinkedHashSet -> uniqeness and insertion order
     }
 }
 
@@ -317,4 +385,9 @@ class basics{
                             can use it as stack 
                                 ad.push("A"),ad.pop()
         Modern java code generally prefers ArrayDeque over the stack class
+
+
+    Q. What will happen if you try to add a null key in a HashMap?
+        Allowed but only once
+        It allows null key and value
  */
