@@ -133,7 +133,8 @@ Q. Why should hashCode() use the same fields as equals()?
 HashSet resizing___________
 ->Hash based collections don't keep an unlimited number of elements
 in the initial table. As element increases, java resize the table
-This improves look up efficiency but resizing itself costs work
+This improves look up efficiency but resizing itself costs work (This keeps search times 
+fast, but the copying step takes extra time and computer memory all at once.)
 
 LoadFactor?...
 it determines when resizing should be happen

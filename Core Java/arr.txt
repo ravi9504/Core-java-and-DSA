@@ -1,0 +1,48 @@
+Do you about the System.arraycopy()?
+    Suppose you have an array and you want to copy it into the other array.
+    Then you will do this problem by using for loop and copy each element of array to the copied array
+    But in java We have built in method that copy the every element of array and that is 
+    Now see syntax,
+        System.arraycopy(
+            source,  // from which array you want to copy       source
+            srcPos, //Starting index in source                  0
+            Destination, // where we want to copy               Destination
+            desPos, // starting index in Destination            0
+            length  //number of elements to copy                source.length
+        )
+
+        example    copy an array two time in other array
+        int arr[]= {23,435,45,6324,342};
+        int copy[]=new int[arr.length];
+        System.arraycopy(arr,0,copy,0,arr.length)
+        System.arraycopy(arr,0,copy,arr.length,length);
+        
+
+
+It also helps in array insertion like this 
+Example    25 at index 2
+    int arr[]={10,20,30,40, _,_};
+    System.arraycopy(
+        arr,2,arr,3,size-index
+    );   // it will give you 10 20 30 30 40
+    // now
+    arr[2]=25;
+    then array will be 10 20 25 30 40
+
+Important question why this System.arraycopy() is faster than manual copying
+    As we know both has same time Complexity O(n) but in manual looping
+        our repeated java level instruction-> array access and loop handling and copy operation 
+
+        whereas in System.arraycopy() is highly optimized by jvm. The jvm can use specialized
+        low-level mechanism to copy array memory, and depeing upon array type and runtime situation
+this is where constant make factor difference      like A->100n   B-> 5n
+as we are seeing both are O(n) but B is much faster than A
+
+
+
+if an array has 4 elements and interger consume 4byte to store integer that does not mean entire array object
+occupies 20 bytes  because java array has also their metadata and their header information
+So int[] with n elements == 4n bytes............   actual jvm object size != simply 4n bytes
+
+(Spatial Locality-> when cpu accesses one element then their nearby memory can often be brought into cpu cache)
+
