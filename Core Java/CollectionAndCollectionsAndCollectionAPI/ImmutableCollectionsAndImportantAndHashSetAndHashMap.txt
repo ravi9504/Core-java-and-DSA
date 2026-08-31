@@ -142,3 +142,107 @@ it determines when resizing should be happen
 Conceptually threshold= capacity * loadfactor 
 if capacity is 16 then 16*0.75= 12 which is threshold and when table reaches the 
 threshold then table resize itself
+
+How does TreeSet maintain sorting?
+    As we know treeset is based on a sorted tree structure and uses RED BLACK TREE to store items in sorted order.
+        Red Black Tree is a self balancing binary search tree where each nodes stores an extra bit to
+        for representing either red or black. And its predictable time complexity is O(log n)
+        for search, insert and delete.
+
+Treeset and Comparable
+    TreeSet<Integer> num= new TreeSet<>();
+        java already knows how to naturally order Integer Similarly String, Integer, Long,Double have natural ordering.
+        For your own class, you can define natural orderwith: Comparable<T>
+        Comparator-> if you don't want to define only one natural ordering use Comparator
+            Ex.. Comparator<Employee> bySalary= Comparator.comparing(Employee::getSalary);
+                    employees.sort(bySalary);
+    If one natural ordering then implement Comparable <Employee> {
+        private int id;
+        public int compareTo(Employee other){
+            return Integer.compare(this.id,other.id);
+        }
+    }  but now in java Set<Employee>emp= new TreeSet<>();
+
+    TreeSet with Comparator
+        Set<Employee>emp= new TreeSet<>(
+            Comparator.comparing(Employee::getSalary)
+        );
+    Here there is a trap
+    As we comparing with salary to sort in treeset but employee with same salary treated as duplicates.
+    That's why we need tie breaker. here it is 
+        Comparator<Employee>emp= new Comparator.comparing(Employee::getSalary).thenComparing(Employee::getId);
+
+
+Set Operations 
+    -> Union    A U B      Set<Integer>union= new HashSet<>(A);
+                                                    union.addAll(B);
+    -> Intersection        Set<Integer>intersec= new HashSet<>(A);  intersec.retainAll(B);
+    -> Difference  A-B     Set<Integer>diff= new HashSet<>(A); diff.removeAll(B);
+
+
+
+
+                                    HashMap Important
+
+-> computeIfAbsent() = this operation performs only if the key exist. Mostly used in real applications
+    Suppose you want group employees by department then 
+        Map<String, List<String>departEmp= new HashMap<>();
+        then
+            departEmp.computeIfAbsent("Java", key-> new ArrayList<>()).add("Ravi");
+    try to understand?...
+        Does key "Java" exist?
+         if not new ArrayList<>(); then java-> [] then returned list recieves .add("Ravi");
+
+-> computeIfPresent()= thisoperations perform only if the key exist
+    Ex: Map<String, Integer> scores= new HashMap<>();
+        scores.put("Ravi",90);
+            Now scores.computeIfPresent("Ravi", (key,value)->value+5);
+                Result= 95
+
+-> compute() = let us to calculate a mapping whether the kye is currently present or absent 
+    Ex-> map.compute("Ravi", (key,value)-> {if (value==null) return 1; else return value+1;})
+    this is more flexible than computeIfAbsent and computeIfPresent
+
+!-> merge() -> if we want to count occurence
+    Map<String, Integer> freq= new HashMap<>();
+     freq.merge("Java" , 1, Integer::sum);
+   Try to understand....
+        First time: Java->1
+        Second Time: Java-> 2
+        Third time: Java-> 3
+concept: If key absent : put hashValue
+        if key present : combine old and new hashValue
+    
+How does hashmap work internally? 
+    key-> hashcode()-> hash-> bucket/index-> find entry-> compare keys-> insert or replace hashValue
+
+Hash Collision-> Both keys map to the same bucket this is called hash collision. 
+                    It does not mean the keys are equal
+
+How does hashMap handle collisions?
+-> 1.Linked Structure/ Chain 
+-> 2.Tree Structure for sufficiently large collision chains
+    We can imagine it as: Bucket 3 -> [10,"Ravi"]->[20,"Amit"]->[30,"Rahul"] this is called separate chaining
+
+Little more about for each____
+    for each contain consumer interface as parameter
+        Consumer interface is a built-in functional interface which has method named accept which gives you
+        a method accept(T t) which perform main operation on the given input argument
+
+        andThen() default method that lets you chain two consumer method. 
+        It works with lambda expression and with forEach
+
+key-> hashCode()-> hashValue after that hash is processed to determine which bucket should be used.
+    how?   index= hash % no. of buckets 
+        actual hashMap implementation uses bit operations rather than simply rely on this exact
+        formula
+    
+Q. How does hashMap know whether it should replace or odd? 
+    here equals() play an important role 
+        Ex. map(10,"Ravi");
+            map(20,"Amit");
+            here 10.equals(20); result -> false..... So it is being added
+            And map.put(10,"Rahul");
+            Here 10.equals(10) result-> true.... So it is being replaced
+        So, if key is same the it gonna be replaced 
+        if key is not same then it gonna be added
