@@ -66,7 +66,67 @@ When is a new object actually created?
                     .map(employee->new employeeDTO(
                         empoyee.getId(),employee.getName()
                     ))
+
+. Stream processing is often element-by-element 
+    List<Integer>result= num.stream().filter(n->n%2==0).map(n->n*n).toList();
+    In this filter works on each element to filter
+
+
+    ->filter()-> used to select elements.
+        How does filter() works?
+            It accepts a predicate  Predicate<Integer>condition= n->n%2==0;
+            A Predicate<T> returns true
+            A Predicate<T> returns false
+        If true-> element stays
+        if false-> element is removed
+
+    -> map() -> used to transform the data
+        List<Integer>n= emp.stream().map(emp::getName).toList();
+        Before-> Stream<Employee>
+        After-> .map(Employee::getName) it becomes Stream<String>
+
+filter() vs Map() 
+    filter() decides should this element remain?
+    map() decides what should this element become?
+
+    -> sorted() -> used to start in ascending order or natural order
+        List<Integer>sorted= numbers.stream().sorted().toList();
+
+        Reverse Order
+            List<Integer>result= numbers.stream().sorted(Comparator.reverseOrder()).toList()
+    
+    Sorting Objects
+        sorting by salary:
+            employee.stream().sorted(Comparator.comparing(Employee::getSalary)).toList()
+        Descending:
+            employee.stream().sorted(Comparator.comparing(Employee::getSalary).reversed()).toList();
+    Multiple Fields:
+    employee.stream().sorted(Comparator.comparing(Employee::getDepartment).thenComparing(Employee::getSalary)).toList()
+
+    -> distinct() -> remove duplicates
+        List<Integer>nums= List.of(1,2,3,4,5,4);
+        List<Integer>result= numbers.stream().distinct().toList();
+        // Output  [1,2,3,4]
+    !Important internally::: for objects, uniqueness depends on proper equality behaviour
+        involving hashCode(), equals()
+    
+    -> limit() and skip()
+        limit() takes only certain number 
+            number.stream().limit(3).toList();
+        skip() ingnores the first elements
+            number.stream().skip(2).toList();
+                Example     Real world pagination
+                    int page=2; int size=10;
+                    then List<Employee>pD= employee.stream().skip((long))
+    
  */
+class Employee{
+    private int id;
+    private String name;
+    private double salary;
+
+
+}
 class basics {
 
     
