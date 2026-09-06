@@ -48,7 +48,7 @@ Common Stream mistakes:::::
     multiple portions is being processed. 
     There is a point if you have suitable work for parallel processing and our machine has enough 
     CPU resources, then this can be faster. 
-    ! Parallel procession has overhead that's why parallelStream() does not automatically mean faster.
+    ! Parallel processing has overhead that's why parallelStream() does not automatically mean faster.
 
     What is overhead?
     Now imagine you have 10 books to shift to other shelf.
